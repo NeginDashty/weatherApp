@@ -30,6 +30,15 @@ return fetchingAPI;
 };
 
 
+const getForcastWeather=async (name)=>{
+    const url=`${baseUrl}/forecast?q=${name}&appid=${APIKEY}&units=metric`;
+    const fetchingAPI=await fetching(url);
+    console.log(url);
+    return fetchingAPI;
+}
+
+
+
 const renderCurrentWeather=(data)=>{
 console.log(data);
 const weatherJsx=`
@@ -59,6 +68,8 @@ const searchHandler=async()=>{
     const currentData=await getCurrentWeatherByName(cityName);
     //currentData دیتایی هست که ما به ای پی ای اسم شهرو دادیم و اون فچ کرد و هواشو برگردوند
     renderCurrentWeather(currentData); 
+    const forecastData=await getForcastWeather(cityName);
+    console.log(forecastData);
     input.value = '';
 }
 
