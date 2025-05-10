@@ -28,8 +28,6 @@ async function fetching(url) {
 
 
 
-
-
 const getCurrentWeatherByName=async (city)=>{
     const url=`${baseUrl}/weather?q=${city}&appid=${APIKEY}&units=metric`;
     const fetchingAPI=await fetching(url);
@@ -70,6 +68,7 @@ const getWeekDays=(date)=>{
 }
 
 const renderForecastWeather=async (data)=>{
+    forecast.innerHTML=" ";
     const filteredData=data.list.filter(obj=>obj.dt_txt.endsWith("12:00:00"));
     console.log(filteredData);
     filteredData.forEach(i => {
@@ -95,6 +94,11 @@ const getForcastWeather=async (name)=>{
 
 
 
+const getForecastWeatherByCoords= async (latitude,longitude)=>{
+const url=`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIKEY}`;
+const fetchingAPI=await fetching(url);
+return fetchingAPI;
+};
 
 const searchHandler=async()=>{
     const cityName=input.value;
@@ -113,8 +117,9 @@ const searchHandler=async()=>{
 const pssitionCallback=async (position)=>{
     const { latitude, longitude } = position.coords;
     const coordsWeather=await getCurrentWeatherByCoords(latitude,longitude);
-    console.log(coordsWeather);
     renderCurrentWeather(coordsWeather);
+    const forecastData=await getForecastWeatherByCoords(latitude,longitude);
+    renderForecastWeather(forecastData);
 };
 
 const errorCallback =(error)=>{
