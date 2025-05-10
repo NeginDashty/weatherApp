@@ -129,4 +129,30 @@ align-items: center;
     font-weight: 500;
     color: #333;
   }
-  
+
+#forecast{
+    display: flex;
+    justify-content: space-between;
+}
+
+#forecast div{
+    width: 150px;
+    padding: 20px 10px 30px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: var(--color-secondary) 0 25px 80px -25px;
+    margin-bottom: 40px;
+}
+
+#forecast h3{
+color: var(--color-primary); 
+margin-bottom: 30px;   
+}
+
+#forecast p{
+    margin-bottom: 10px;
+}
+
+#forecast span{
+    color: var(--color-secondary);
+}
