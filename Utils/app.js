@@ -1,7 +1,5 @@
 
-const baseUrl=
-'https://api.openweathermap.org/data/2.5';
-
+import getWeatherData from "../httpreq.js"
 const days=[
 "Sunday",
 "Monday",
@@ -11,36 +9,12 @@ const days=[
 "Friday",
 "Saturday"
 ];
-const APIKEY='412f48031a9b6c0c10beb43a34c5281e';
+// const APIKEY='412f48031a9b6c0c10beb43a34c5281e';
 const input=document.querySelector('#input');
 const searchButton=document.querySelector('#searchButton');
 const weatherContainer=document.querySelector('#weatherContainer');
 const locationIcon=document.querySelector('#location');
 const forecast=document.querySelector('#forecast');
-
-
-async function fetching(url) {
-    const response=await fetch(url);
-    const json=response.json();
-    return json;
-  
-};
-
-
-
-const getCurrentWeatherByName=async (city)=>{
-    const url=`${baseUrl}/weather?q=${city}&appid=${APIKEY}&units=metric`;
-    const fetchingAPI=await fetching(url);
-    return fetchingAPI;
-
-};
-
-
-const getCurrentWeatherByCoords= async (latitude,longitude)=>{
-const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${APIKEY}`;
-const fetchingAPI=await fetching(url);
-return fetchingAPI;
-};
 
 
 const renderCurrentWeather=(data)=>{
@@ -85,42 +59,30 @@ const renderForecastWeather=async (data)=>{
 };
 
 
-
-const getForcastWeather=async (name)=>{
-    const url=`${baseUrl}/forecast?q=${name}&appid=${APIKEY}&units=metric`;
-    const fetchingAPI=await fetching(url);
-    return fetchingAPI;
-};
-
-
-
-const getForecastWeatherByCoords= async (latitude,longitude)=>{
-const url=`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIKEY}`;
-const fetchingAPI=await fetching(url);
-return fetchingAPI;
-};
-
 const searchHandler=async()=>{
     const cityName=input.value;
     if(!cityName){
         alert("Please enter the cityName")
     };
-    const currentData=await getCurrentWeatherByName(cityName);
+    const currentData=await getWeatherData('current',cityName);
     //currentData دیتایی هست که ما به ای پی ای اسم شهرو دادیم و اون فچ کرد و هواشو برگردوند
     renderCurrentWeather(currentData);
 
-    const forecastData=await getForcastWeather(cityName);
+    const forecastData=await getWeatherData('forecast',cityName);
     renderForecastWeather(forecastData);
     input.value = '';
 }
 
-const pssitionCallback=async (position)=>{
+const pssitionCallback = async (position) => {
     const { latitude, longitude } = position.coords;
-    const coordsWeather=await getCurrentWeatherByCoords(latitude,longitude);
+
+    const coordsWeather = await getWeatherData('current', position.coords);
     renderCurrentWeather(coordsWeather);
-    const forecastData=await getForecastWeatherByCoords(latitude,longitude);
+
+    const forecastData = await getWeatherData('forecast', position.coords);
     renderForecastWeather(forecastData);
 };
+
 
 const errorCallback =(error)=>{
     console.log(error);
