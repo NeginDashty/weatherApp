@@ -1,5 +1,7 @@
 
-import getWeatherData from "../httpreq.js"
+import getWeatherData from "../httpreq.js";
+import { showModal , removeModal } from "./modal.js";
+
 const days=[
 "Sunday",
 "Monday",
@@ -15,7 +17,7 @@ const searchButton=document.querySelector('#searchButton');
 const weatherContainer=document.querySelector('#weatherContainer');
 const locationIcon=document.querySelector('#location');
 const forecast=document.querySelector('#forecast');
-
+const modalButton=document.querySelector("#modalButton");
 
 const renderCurrentWeather=(data)=>{
 console.log(data);
@@ -62,7 +64,7 @@ const renderForecastWeather=async (data)=>{
 const searchHandler=async()=>{
     const cityName=input.value;
     if(!cityName){
-        alert("Please enter the cityName")
+        showModal("Please enter the cityName")
     };
     const currentData=await getWeatherData('current',cityName);
     //currentData دیتایی هست که ما به ای پی ای اسم شهرو دادیم و اون فچ کرد و هواشو برگردوند
@@ -95,10 +97,11 @@ const locationGandler=()=>{
         navigator.geolocation.getCurrentPosition(pssitionCallback,errorCallback) ;
 
     }else{
-        alert('your browser doesnt support ')
+        showModal('your browser doesnt support ')
     }
 }
 
 
 searchButton.addEventListener('click',searchHandler);
 locationIcon.addEventListener('click',locationGandler);
+modalButton.addEventListener('click',removeModal)
